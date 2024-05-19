@@ -1,26 +1,79 @@
 Задача 1
-#Вместо этой строки сюда писать запрос - ответ на задачу 1
+select top 10 orderNumber, productCode, priceEach*quantityOrdered as fullPrice
+from orderdetails
+order by fullPrice desc
 
 
 Задача 2
-#Вместо этой строки сюда писать запрос - ответ на задачу 2
+select orderNumber, SUM(priceEach*quantityOrdered) as total
+from orderdetails
+where total > 59000
+group by orderNumber
 
 
 Задача 3
-#Вместо этой строки сюда писать запрос - ответ на задачу 3
+select od.orderNumber, ord.orderDate as orderDate, ord.status as status, SUM(priceEach*quantityOrdered) as total
+from orderdetails as od
+inner join orders as ord on ord.orderNumber = od.orderNumber
+where total > 59000
+group by od.orderNumber
 
 
 Задача 4
-#Вместо этой строки сюда писать запрос - ответ на задачу 4
+select custm.contactFirstName as contactFirstName
+       , custm.contactLastName as contactLastName
+       , custm.country as country
+       , od.orderNumber
+       , ord.orderDate as orderDate
+       , ord.status as status
+       , SUM(priceEach*quantityOrdered) as total
+
+from orderdetails as od
+
+inner join orders as ord on ord.orderNumber = od.orderNumber
+inner join customers as custm on custm.customerNumber = ord.customerNumber
+
+where total > 59000
+group by od.orderNumber
 
 
 Задача 5
-#Вместо этой строки сюда писать запрос - ответ на задачу 5
+select TOP 10 prd.productName as productName
+       , SUM(priceEach*quantityOrdered) as total
+
+from orderdetails as od
+inner join products as prd on prd.productCode = od.productCode
+
+group by od.productCode
+order by total DESC
 
 
 Задача 6
-#Вместо этой строки сюда писать запрос - ответ на задачу 6
+select empl.firstName as firstName
+       , empl.lastName as lastName
+       , custm.contactFirstName as contactFirstName
+       , custm.contactLastName as contactLastName
+
+from employees as empl
+left join customers as custm on empl.employeeNumber = custm.salesRepEmployeeNumber
+
+UNION
+
+select empl.firstName as firstName
+       , empl.lastName as lastName
+       , custm.contactFirstName as contactFirstName
+       , custm.contactLastName as contactLastName
+
+from employees as empl
+right join customers as custm on empl.employeeNumber = custm.salesRepEmployeeNumber
 
 
 Задача 7
-#Вместо этой строки сюда писать запрос - ответ на задачу 7
+select empl.firstName as firstName
+       , empl.lastName as lastName
+       , empl.jobTitle as jobTitle
+       , subs.subFirstName as subFirstName
+       , subs.subLastName as subLastName
+
+from employees as empl
+left join employees as subs on empl.employeeNumber = subs.reportsTo
